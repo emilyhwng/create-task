@@ -55,7 +55,7 @@ def consecutive_letters(pattern):
         string = "row " + str(i + 1) + " " + side + ": " + result[i]
         print(string)
 
-name = input('what is the image name? ')
+name = input('what is the image file name? ')
 max_pixels = int(input('maximum number of pixels? '))
 colors = int(input('how many different colors do you want to use? '))
 file_name = name + '.jpg'
