@@ -1,5 +1,8 @@
 from PIL import Image
+import os
 
+os.system('cls')
+    
 def pixelate(image, max_pixels, colors):
     image = Image.open(image)
 
@@ -13,9 +16,9 @@ def pixelate(image, max_pixels, colors):
         new_width, new_height = width, height
 
     image = image.resize((new_width, new_height))
-
+    
     palette = image.quantize(colors)
-
+    #image.show()
     pattern = ''
     for i in range(new_height):
         for j in range(new_width):
@@ -25,6 +28,7 @@ def pixelate(image, max_pixels, colors):
 
     print()
     print("Dimensions:", new_width, "x", new_height)
+ 
     return pattern
 
 def consecutive_letters(pattern):
@@ -45,6 +49,8 @@ def consecutive_letters(pattern):
         line += str(count) + start_letter
         result.append(line)
     
+    result.reverse()
+    
     string = ''    
     for i in range (len(result)):
         side = ''
@@ -61,7 +67,6 @@ colors = int(input('how many different colors do you want to use? '))
 file_name = name + '.jpg'
 
 crochet_pattern = pixelate(file_name, max_pixels, colors)
-print()
-print(crochet_pattern)
+print('\n' + crochet_pattern)
 counts = consecutive_letters(crochet_pattern)
 print()
