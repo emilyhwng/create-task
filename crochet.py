@@ -2,6 +2,7 @@ from PIL import Image
 import os
 
 os.system('cls')
+print('HELLO :) please save your image as a jpg to start!\n')
 
 # maximizes dimensions maintaining original aspect ratio under the maximum number of pixels
 def get_dimensions(image, max_pixels):
@@ -84,7 +85,7 @@ def written_pattern(pattern):
         print(string)
 
 # getting input information (file name, max pixels, and number of palette colors)
-name = input('what is the image file name? ')
+name = input('what is the image name? ')
 max_pixels = int(input('maximum number of pixels? '))
 colors = int(input('how many different colors do you want to use? '))
 file_name = name + '.jpg'
