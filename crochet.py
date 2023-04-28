@@ -9,13 +9,13 @@ def get_dimensions(image, max_pixels):
     
     width, height = image.size
     total_pixels = width * height
+    
     if total_pixels > max_pixels:
         ratio = width / height
-        new_width = int((max_pixels * ratio) ** 0.5)
-        new_height = int(new_width / ratio)
-    else:
-        new_width, new_height = width, height
-    return new_width, new_height
+        width = int((max_pixels * ratio) ** 0.5)
+        height = int(width / ratio)
+    
+    return width, height
 
 # creates pixel grid using colors of palette represented by letters
 def pixelate(image, colors):
@@ -34,34 +34,52 @@ def pixelate(image, colors):
     print("\nDimensions:", width, "x", height)
     return pattern
 
-# creates written pattern counting number of consecutives stitches in a color for each row, starting from the bottom left and working way up going back and forth
+# creates written pattern counting number of consecutives stitches in a color for each row
+# starts from the bottom left and works way up going back and forth
 def written_pattern(pattern):
     rows = pattern.split('\n')[:-1]
     result = []
-    for row in rows:
+    string = ''
+    
+    for i, row in enumerate(rows):
         count = 0
         line = ''
-        start_letter = row[0]
-        for i in range(len(row)):
-            current_letter = row[i]
-            if current_letter == start_letter:
-                count += 1
-            else:
-                line += str(count) + start_letter + ' '
-                count = 1
-                start_letter = current_letter
-        line += str(count) + start_letter
-        result.append(line)
-    
-    result.reverse()
-    
-    string = ''    
+        
+        # odd rows, counts consecutive stitches from left to right
+        if i % 2 == 0:
+            start_letter = row[0]
+            for j in range(len(row)):
+                current_letter = row[j]
+                if current_letter == start_letter:
+                    count += 1
+                else:
+                    line += str(count) + start_letter + ' '
+                    count = 1
+                    start_letter = current_letter
+            line += str(count) + start_letter
+            result.append(line)
+        
+        # even rows, counts consecutive stitches from right to left
+        elif i % 2 == 1:
+            start_letter = row[-1]
+            for j in range(len(row)):
+                current_letter = row[-j-1]
+                if current_letter == start_letter:
+                    count += 1
+                else:
+                    line += str(count) + start_letter + ' '
+                    count = 1
+                    start_letter = current_letter
+            line += str(count) + start_letter
+            result.append(line)
+            
+    result.reverse()    
     for i in range (len(result)):
         side = ''
         if i % 2 == 0:
-            side = "[RS]"
-        else: 
             side = "[WS]"
+        else: 
+            side = "[RS]"
         string = "row " + str(i + 1) + " " + side + ": " + result[i]
         print(string)
 
@@ -77,6 +95,6 @@ pixel_grid = pixelate(file_name, colors)
 
 # printing pixel grid and written pattern
 print('\n' + pixel_grid)
-print('---------- WRITTEN PATTERN ----------\n')
+print('----- WRITTEN PATTERN -----\n')
 print('foundation chain: ' + str(width) + ' chains')
 written_pattern(pixel_grid)
